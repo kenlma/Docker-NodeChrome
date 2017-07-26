@@ -16,7 +16,7 @@ RUN yum update -y
 RUN yum -y install bzip2 \
 	apt-get \
     ca-certificates \
-    openjdk-8-jre-headless \
+    java-1.8.0-openjdk \
     tzdata \
     unzip \
 	xvfb \
