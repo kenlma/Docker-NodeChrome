@@ -38,7 +38,7 @@ RUN  mkdir -p /opt/selenium \
 COPY entry_point.sh \
   functions.sh \
     /opt/bin/
-	
+RUN chmod 755 /opt/bin/*
 	
 #============================
 # Some configuration options
@@ -79,8 +79,9 @@ ENV NODE_APPLICATION_NAME ""
 #       google-chrome-beta  (pull latest beta)
 #============================================
 RUN wget https://dl.google.com/linux/direct/google-chrome-stable_current_x86_64.rpm \
-  && yum -y localinstall google-chrome-stable_current_x86_64.rpm
-
+  && yum -y localinstall google-chrome-stable_current_x86_64.rpm \
+  && rm -rf google-chrome-stable_current_x86_64.rpm \
+  && yum clean all 
 #==================
 # Chrome webdriver
 #==================
