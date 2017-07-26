@@ -13,6 +13,7 @@ USER root
 #========================
 
 RUN yum update -y
+RUN rpm --rebuilddb; yum install -y yum-plugin-ovl
 RUN yum -y install bzip2 \
 	apt-get \
     ca-certificates \
