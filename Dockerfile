@@ -2,10 +2,70 @@
 # NOTE: DO *NOT* EDIT THIS FILE.  IT IS GENERATED.
 # PLEASE UPDATE Dockerfile.txt INSTEAD OF THIS FILE
 # !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-FROM selenium/node-base:3.4.0-einsteinium
-LABEL authors=SeleniumHQ
+FROM centos:7.2.1511
+MAINTAINER Ken.l.ma
 
 USER root
+
+#========================
+# Miscellaneous packages
+# Includes minimal runtime used for executing non GUI Java programs
+#========================
+
+RUN yum update -y
+RUN yum -y install bzip2 \
+	apt-get \
+    ca-certificates \
+    openjdk-8-jre-headless \
+    tzdata \
+    unzip \
+	xvfb \
+	locales \
+	firefox \
+	libXfont \
+	redhat-lsb \
+	libXScrnSaver \
+	Xorg \
+    wget
+RUN  mkdir -p /opt/selenium \
+  && wget --no-verbose https://selenium-release.storage.googleapis.com/3.4/selenium-server-standalone-3.4.0.jar \
+    -O /opt/selenium/selenium-server-standalone.jar
+
+#==============================
+# Scripts to run Selenium Node
+#==============================
+COPY entry_point.sh \
+  functions.sh \
+    /opt/bin/
+	
+	
+#============================
+# Some configuration options
+#============================
+ENV SCREEN_WIDTH 1360
+ENV SCREEN_HEIGHT 1020
+ENV SCREEN_DEPTH 24
+ENV DISPLAY :99.0
+
+#========================
+# Selenium Configuration
+#========================
+# As integer, maps to "maxInstances"
+ENV NODE_MAX_INSTANCES 1
+# As integer, maps to "maxSession"
+ENV NODE_MAX_SESSION 1
+# As integer, maps to "port"
+ENV NODE_PORT 5555
+# In milliseconds, maps to "registerCycle"
+ENV NODE_REGISTER_CYCLE 5000
+# In milliseconds, maps to "nodePolling"
+ENV NODE_POLLING 5000
+# In milliseconds, maps to "unregisterIfStillDownAfter"
+ENV NODE_UNREGISTER_IF_STILL_DOWN_AFTER 60000
+# As integer, maps to "downPollingLimit"
+ENV NODE_DOWN_POLLING_LIMIT 2
+# As string, maps to "applicationName"
+ENV NODE_APPLICATION_NAME ""
 
 #============================================
 # Google Chrome
@@ -17,16 +77,8 @@ USER root
 #       latest (equivalent to google-chrome-stable)
 #       google-chrome-beta  (pull latest beta)
 #============================================
-ARG CHROME_VERSION="google-chrome-stable"
-RUN wget -q -O - https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - \
-  && echo "deb http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list \
-  && apt-get update -qqy \
-  && apt-get -qqy install \
-    ${CHROME_VERSION:-google-chrome-stable} \
-  && rm /etc/apt/sources.list.d/google-chrome.list \
-  && rm -rf /var/lib/apt/lists/* /var/cache/apt/*
-
-USER seluser
+RUN wget https://dl.google.com/linux/direct/google-chrome-stable_current_x86_64.rpm \
+  && yum -y localinstall google-chrome-stable_current_x86_64.rpm
 
 #==================
 # Chrome webdriver
@@ -38,7 +90,7 @@ RUN wget --no-verbose -O /tmp/chromedriver_linux64.zip https://chromedriver.stor
   && rm /tmp/chromedriver_linux64.zip \
   && mv /opt/selenium/chromedriver /opt/selenium/chromedriver-$CHROME_DRIVER_VERSION \
   && chmod 755 /opt/selenium/chromedriver-$CHROME_DRIVER_VERSION \
-  && sudo ln -fs /opt/selenium/chromedriver-$CHROME_DRIVER_VERSION /usr/bin/chromedriver
+  && ln -fs /opt/selenium/chromedriver-$CHROME_DRIVER_VERSION /usr/bin/chromedriver
 
 COPY generate_config /opt/bin/generate_config
 
@@ -47,5 +99,7 @@ COPY generate_config /opt/bin/generate_config
 #=================================
 COPY chrome_launcher.sh /opt/google/chrome/google-chrome
 
-# Generating config inside the image rather than with entry_point.sh
-RUN /opt/bin/generate_config > /opt/selenium/config.json
+
+ENV DBUS_SESSION_BUS_ADDRESS=/dev/null
+
+CMD ["/opt/bin/entry_point.sh"]
