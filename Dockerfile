@@ -15,12 +15,11 @@ USER root
 RUN yum update -y
 RUN rpm --rebuilddb; yum install -y yum-plugin-ovl
 RUN yum -y install bzip2 \
-	apt-get \
     ca-certificates \
     java-1.8.0-openjdk \
     tzdata \
     unzip \
-	xvfb \
+	Xvfb \
 	locales \
 	firefox \
 	libXfont \
