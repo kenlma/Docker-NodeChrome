@@ -103,8 +103,9 @@ RUN chmod 777 /opt/bin/generate_config
 #=================================
 COPY chrome_launcher.sh /opt/google/chrome/google-chrome
 RUN chmod 777 /opt/*
-RUN /opt/bin/generate_config > /opt/selenium/config.json
+
 
 ENV DBUS_SESSION_BUS_ADDRESS=/dev/null
 
 CMD ["/opt/bin/entry_point.sh"]
+RUN /opt/bin/generate_config > /opt/selenium/config.json
