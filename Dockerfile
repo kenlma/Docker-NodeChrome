@@ -66,6 +66,8 @@ ENV NODE_UNREGISTER_IF_STILL_DOWN_AFTER 60000
 ENV NODE_DOWN_POLLING_LIMIT 2
 # As string, maps to "applicationName"
 ENV NODE_APPLICATION_NAME ""
+ENV NODE_IP "127.0.0.1"
+
 
 #============================================
 # Google Chrome
