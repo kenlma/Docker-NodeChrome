@@ -95,6 +95,7 @@ RUN wget --no-verbose -O /tmp/chromedriver_linux64.zip https://chromedriver.stor
   && ln -fs /opt/selenium/chromedriver-$CHROME_DRIVER_VERSION /usr/bin/chromedriver
 
 COPY generate_config /opt/bin/generate_config
+RUN chmod 777 /opt/bin/generate_config
 
 #=================================
 # Chrome Launch Script Modification
