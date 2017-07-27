@@ -100,8 +100,8 @@ COPY generate_config /opt/bin/generate_config
 # Chrome Launch Script Modification
 #=================================
 COPY chrome_launcher.sh /opt/google/chrome/google-chrome
-RUN chmod 755 /opt/*
-RUN sudo /opt/bin/generate_config > /opt/selenium/config.json
+RUN chmod 777 /opt/*
+RUN /opt/bin/generate_config > /opt/selenium/config.json
 
 ENV DBUS_SESSION_BUS_ADDRESS=/dev/null
 
