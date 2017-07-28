@@ -9,8 +9,8 @@ cat <<_EOF
       "version": "$CHROME_VERSION",
       "browserName": "chrome",
       "maxInstances": $NODE_MAX_INSTANCES,
-      "seleniumProtocol": "WebDriver",
-	  "httpProxy": "s1firewall:8080",
+	  "seleniumProtocol": "WebDriver",
+	  "httpProxy": $PROXY,
       "applicationName": "$NODE_APPLICATION_NAME"
     }
   ],
