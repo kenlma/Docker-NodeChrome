@@ -105,6 +105,3 @@ RUN chmod 777 /opt/bin/generate_config
 # Chrome Launch Script Modification
 #=================================
 COPY chrome_launcher.sh /opt/google/chrome/google-chrome
-RUN chmod 777 /opt/*
-
-RUN /opt/bin/generate_config > /opt/selenium/config.json
