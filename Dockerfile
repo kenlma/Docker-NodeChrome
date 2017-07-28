@@ -68,6 +68,9 @@ ENV NODE_DOWN_POLLING_LIMIT 2
 ENV NODE_APPLICATION_NAME ""
 ENV NODE_IP "127.0.0.1"
 
+ENV DBUS_SESSION_BUS_ADDRESS=/dev/null
+
+CMD ["/opt/bin/entry_point.sh"]
 
 #============================================
 # Google Chrome
@@ -104,8 +107,4 @@ RUN chmod 777 /opt/bin/generate_config
 COPY chrome_launcher.sh /opt/google/chrome/google-chrome
 RUN chmod 777 /opt/*
 
-
-ENV DBUS_SESSION_BUS_ADDRESS=/dev/null
-
-CMD ["/opt/bin/entry_point.sh"]
 RUN /opt/bin/generate_config > /opt/selenium/config.json
