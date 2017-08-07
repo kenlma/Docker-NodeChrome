@@ -67,6 +67,7 @@ ENV NODE_DOWN_POLLING_LIMIT 2
 # As string, maps to "applicationName"
 ENV NODE_APPLICATION_NAME ""
 ENV NODE_IP "127.0.0.1"
+ENV http_proxy ""
 
 ENV DBUS_SESSION_BUS_ADDRESS=/dev/null
 
